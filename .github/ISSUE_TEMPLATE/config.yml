@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: SoulCTRL Beta Help
+    url: https://github.com/LuisPatino55/SoulCTRL_Beta_Feedback_and_Bugs/issues
+    about: Use this tracker for beta bug reports and feedback only.
