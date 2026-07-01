@@ -7,7 +7,7 @@ A Python framework for creating emotionally intelligent NPC interactions powered
 ## Requirements
 
 - Python 3.11+
-- [Ollama](https://ollama.com/docs/installation) running locally *(default provider; swap to any cloud API via `/manage`)*
+- [Ollama](https://ollama.com/docs/installation) running locally *(default provider; swap to any cloud API via `/manage` or `LLM ServiceModels Manager` button in the webGUI interface)*
 - Python packages: `openai`, `keyring`, `colorama`
 - Optional browser GUI packages: `fastapi`, `uvicorn`
 
@@ -54,8 +54,6 @@ Browser GUI optional install (Highly recommended for best experience):
 pip install .[gui]
 ```
 
-For commercial distribution readiness, see the dependency-license workflow in `COMPLIANCE_LICENSE_AUDIT.md`.
-
 ---
 
 ## Quick Start
@@ -66,15 +64,8 @@ For commercial distribution readiness, see the dependency-license workflow in `C
 python run_chat.py
 ```
 
-```python
-from npc_chat import NpcChatSystem
 
-system = NpcChatSystem()
-system._main_()
-```
-
-
-### Programmatic / headless mode
+### Programmatic / No UI mode (headless)
 
 ```python
 from npc_chat_system import NpcChatSystem, ConsoleOutputAdapter, ConsoleInputAdapter
@@ -89,7 +80,7 @@ system.open_player_mode()
 ```
 
 
-### Browser GUI mode - In development
+### Browser GUI mode (Best experience)
 
 ```bash
 python run_chat_gui.py
@@ -100,7 +91,6 @@ Optional flags:
 - `--host 127.0.0.1`
 - `--port 8765`
 - `--no-browser`
-- `-story`
 
 ---
 
@@ -109,15 +99,16 @@ Optional flags:
 
 ### Conversation System
 
-- LLM-powered NPC dialogue via `NpcMessageSystem` + `LLMService`
-- Streaming responses (token-by-token) or full-text mode (`settings.stream_npc_responses`)
-- Multi-layered NPC personality `judge` components, create more nuanced behaviour, responses, and actions
-- Asynchronous `judge` scheduler — judges run in background threads after each NPC reply; chat input stays responsive
-- Deferred `judge` application — results are injected into the *next* system prompt so no turn is blocked
-- Dynamic and highly configurable emotions, relationships and behaviour systems 
-- Automatic memory collection, with manual overrides and full edit control 
+- LLM-powered NPC dialogue & story creation via `SoulCTRL` + `LLMService`
+- Streaming responses (token-by-token) or full-text mode (`Set in the Chat Player Menu`)
+- Multi-layered NPC personality `judge components`, create more nuanced behaviour, responses, and actions
+- Asynchronous `judge component` scheduler — judges run in background threads after each NPC reply; chat input stays responsive
+- Deferred `judge decision` application — results are injected into the *next* system prompt so no turn is blocked and the NPC can respond immediately to component decisions
+- Dynamic and highly configurable emotions, relationships, behaviour, stats, and stat definitions
+- Automatic memory collection, with manual overrides and full edit control
+- Interactable item system that the NPC uses autonomously to trigger actions (eat, drink, change locations, use weapons, charge and pay currency, etc.)
 - Conversation archiving: live history compresses to archive chunks when it exceeds `chat_history_compression_threshold`; past context is summarized by the LLM and kept as a rolling archive
-
+- Multiple user profiles with per-user & per NPC (memory, relationship stats, and conversation history)
 
 
 ### NPC Profiles
@@ -125,6 +116,7 @@ Optional flags:
 Each NPC (`ChatNPC`) carries:
 
 | Component                   | Contents                                                                      |
+|-----------------------------|-------------------------------------------------------------------------------|
 | **Bio**                     | Name, age, gender, height, weight, build, hair/eye color, skin tone, fashion  |
 | **Backstory**               | Freeform history string injected into the system prompt                       |
 | **Personality traits**      | Positive traits — most influential prompt input                               |
@@ -144,36 +136,36 @@ Each NPC (`ChatNPC`) carries:
 ### 4-Dimensional Emotion Model
 
 Availabe Emotions: 
-`NEUTRAL` - **EmotionalVector**(0.0, 0.0, 0.0, 0.0)
-`HAPPY` - **EmotionalVector**(0.5, 0.5, 0.5, 0.5)
-`ELATED` - **EmotionalVector**(0.8, 0.5, 1.0, 0.5)
+- `NEUTRAL` - **EmotionalVector**(0.0, 0.0, 0.0, 0.0)
+- `HAPPY` - **EmotionalVector**(0.5, 0.5, 0.5, 0.5)
+- `ELATED` - **EmotionalVector**(0.8, 0.5, 1.0, 0.5)
 
-`SURPRISED` - **EmotionalVector**(0.7, 0.0, 0.0, 0.0)
-`EXCITED` - **EmotionalVector**(0.7, 0.4, 0.9, 0.5)
+- `SURPRISED` - **EmotionalVector**(0.7, 0.0, 0.0, 0.0)
+- `EXCITED` - **EmotionalVector**(0.7, 0.4, 0.9, 0.5)
 
-`SAD` - **EmotionalVector**(-0.3, -0.5, -0.3, -0.3)
-`DISGUSTED` - **EmotionalVector**(-0.5, -0.0, -0.7, -0.6)
-`JEALOUS` - **EmotionalVector**(-0.7, 0.6, -0.7, -0.6)
+- `SAD` - **EmotionalVector**(-0.3, -0.5, -0.3, -0.3)
+- `DISGUSTED` - **EmotionalVector**(-0.5, -0.0, -0.7, -0.6)
+- `JEALOUS` - **EmotionalVector**(-0.7, 0.6, -0.7, -0.6)
 
-`ANNOYED` - **EmotionalVector**(0.1, 0.4, -0.5, 0.0)
-`ANGRY` - **EmotionalVector**(0.9, 0.8, -1.0, -1.0)
+- `ANNOYED` - **EmotionalVector**(0.1, 0.4, -0.5, 0.0)
+- `ANGRY` - **EmotionalVector**(0.9, 0.8, -1.0, -1.0)
 
-`LOVING` - **EmotionalVector**(0.6, 0.6, 0.8, 1.0)
-`ROMANTIC` - **EmotionalVector**(0.8, 0.3, 1.0, 0.5)
-`LUSTFUL` - **EmotionalVector**(1.0, 1.0, 1.0, 1.0)
+- `LOVING` - **EmotionalVector**(0.6, 0.6, 0.8, 1.0)
+- `ROMANTIC` - **EmotionalVector**(0.8, 0.3, 1.0, 0.5)
+- `LUSTFUL` - **EmotionalVector**(1.0, 1.0, 1.0, 1.0)
 
-`SICK` - **EmotionalVector**(-0.7, -0.5, -0.6, -0.4)
-`FEARFUL` - **EmotionalVector**(-0.8, -0.7, -1.0, -0.7)
-`PANICKED` - **EmotionalVector**(-1.0, -1.0, -1.0, -1.0)
+- `SICK` - **EmotionalVector**(-0.7, -0.5, -0.6, -0.4)
+- `FEARFUL` - **EmotionalVector**(-0.8, -0.7, -1.0, -0.7)
+- `PANICKED` - **EmotionalVector**(-1.0, -1.0, -1.0, -1.0)
 
 
 NPCs maintain an `EmotionalVector` with four axes:
-
 | Axis          | Description                                     |
-| **Arousal**   | Activation level (angered ↔ excited)            |
-| **Dominance** | Perceived social power (submissive ↔ dominant)  |
-| **Pleasure**  | Hedonic valence (negative ↔ positive)           |
-| **Trust**     | Openness (guarded ↔ open)                       |
+|---------------|-------------------------------------------------|
+| Arousal  | Activation level (angered ↔ excited)            |
+| Dominance | Perceived social power (submissive ↔ dominant)  |
+| Pleasure  | Hedonic valence (negative ↔ positive)           |
+| Trust     | Openness (guarded ↔ open)                       |
 
 Each axis has an individual `EmotionAxis` config:
 - `weight`      — impulse sensitivity multiplier
@@ -196,11 +188,12 @@ The `EmotionalJudge` can be disabled in the settings, or in the webGUI Main Page
 
 
 
-### Judge System
+### Judge Component System
 
 Four built-in asynchronous judges, each configurable with `cooldown_rounds`:
 
 | Judge                   | Default cooldown      | Purpose                                                 |
+|-------------------------|----------------------|---------------------------------------------------------|
 | `MemoryExtractionJudge` | 10 rounds             | Extracts memorable facts about the interactions         |
 | `SituationalAdviceJudge`| 1 rounds              | Detects social cues and provides advice to the NPC      |
 | `ActionJudge`           | 2 round               | Triggers item use & other available actions by the NPC  |
@@ -211,6 +204,9 @@ Settings also available on the webGUI Main Page, Welcome Panel.
 
 Custom judges can be added by subclassing `NpcJudge` and appending to `npc_message_system.judges`.
 
+If you run into performance issues with judges, you can disable them in the main panel. I recommend using the `EmotionalJudge` at minimum, as it is the most important for driving the emotional state of the NPC. The next most important in my opinion is the `MemoryExtractionJudge`, as it allows the NPC to remember things about the user and the conversation.
+
+- While I feel the `ActionJudge` is a lot of fun, it can be disabled if you wish to have the NPC not use items or trigger actions. 
 
 
 ### Memory System
@@ -227,7 +223,7 @@ Custom judges can be added by subclassing `NpcJudge` and appending to `npc_messa
 
 ### Location System
 
-- Locations carry a name, description, atmosphere, time-of-day, and danger level (0–100)
+- Locations carry a name, description, atmosphere, time-of-day, and danger level (0–1 Percentage)
 - Time and danger are read by the `NpcMessageSystem` each turn and included in the NPC system prompt
 - **Scene transitions** move the NPC to a new location mid-conversation with an optional LLM-generated transition message
 - **Interactable items** can be attached; the `ActionJudge` can trigger item actions based on conversation context
@@ -237,14 +233,13 @@ Custom judges can be added by subclassing `NpcJudge` and appending to `npc_messa
 ### Interactable Items & Inventory
 
 - Typed interactable items: `Gun`, `Door`, `Vehicle`, `Consumable`, and more (see `interactable_items.py`)
-- **User inventory** (`InventoryManager`) — items owned by the player, independent of location items; accessible in chat via `/items`
-- **NPC inventory** — NPC-owned interactables can be triggered by the player via `/use_item`
-- **Location inventory** — scene interactables can be browsed/triggered via `/loc_items`
-- **Transfer flow** — `/give` moves selected user items to the active NPC inventory
-- **Consumable catalog** (`consumable_items.py`) — prebuilt consumables tagged by type: `food`, `drink`, `drug`, `lotion`, `medicine`
+- **User inventory** (`InventoryManager`) — items owned by the player, independent of location items; accessible in chat via `/items` on in the `user info panel` in the webGUI
+- **NPC inventory** — NPC-owned interactables can be triggered by the player via `/use_item`, by right-clicking the NPC in the webGUI, or by the `ActionJudge` automatically
+- **Location inventory** — scene interactables can be browsed/triggered via `/loc_items`, by right-clicking the location in the webGUI, or by the `ActionJudge` automatically (if the NPC is using the item)
+- **Transfer flow** — `/give` & `Give NPC Item Button` moves selected user items to the active NPC inventory and creates a `MemoryPoint` for the NPC to remember the gift; `/use_item` triggers an action and creates a `MemoryPoint` for the NPC to be aware they used the item
+- **Consumable catalog** (`consumable_items.py`) — prebuilt consumables tagged by type: `food`, `drink`, `drug`, `lotion`, `medicine`, etc. Each has a `use()` action that applies effects to the NPC or user, including stat deltas, relationship impulses, and status effects
 - `InteractableFactory` restores typed items from save data and supports type-filtered queries
 - Action execution supports key-based item lookup, target resolution, status-effect IDs, and use-limit depletion handling
-
 
 
 ### Status Effects
@@ -260,27 +255,14 @@ Custom judges can be added by subclassing `NpcJudge` and appending to `npc_messa
 - Active effects save and restore with the NPC profile (`effect_id + remaining_time`)
 
 
-
-### Quest System - In development (not implemented yet)
-
-- `QuestObjective` wraps a `MemoryPoint` for structured status tracking
-- `Quest` holds multiple objectives; supports sequential or non-sequential ordering
-- Per-objective time limits with auto-fail on expiry
-- `RelationshipImpulse` rewards/penalties applied to target NPCs on objective completion or failure
-- Saved to `Erosive_Tech/Quest_Data/` as `.quest` files via `QuestDatabase`
-
-See [QUEST_SYSTEM_README.md](QUEST_SYSTEM_README.md) for full documentation.
-
-
-
 ### User Profiles
 
 - Stores preferences, active NPC/location selections, relationship history, and memory per NPC
 - `auto_initialize_chat_enabled` / `auto_initialize_chat_cooldown_seconds` — optional idle-triggered NPC follow-up
 - `generate_previously_on_message` — toggle "Previously On…" conversation summary on resume
+- `generate_scene_transition_message` — toggle LLM-generated scene transition messages
 - Includes a `StatManager` with a default `Health` stat (100)
 - Per-user per-NPC relationship data: stats, category, memory points, conversation history
-
 
 
 ### LLM Service
@@ -289,7 +271,7 @@ See [QUEST_SYSTEM_README.md](QUEST_SYSTEM_README.md) for full documentation.
 - Default provider: local Ollama at `http://localhost:11434/v1`
 - Switch to any OpenAI-compatible cloud API via `/manage` — no code changes required
 - API keys stored in the OS credential store (Windows Credential Manager / macOS Keychain / Linux Secret Service) — **never written to disk**
-- Separate model slots: `chat_model_name` (dialogue & helper), `emotional_model_name` (judges)
+- Separate model slots: `chat_model_name` (dialogue & helper), `emotional_model_name` (judges) . For best performance, use a smaller (instruct) model for the emotional model and a larger model for the chat model. The system is designed to efficiently switch between models at an optimal time, but if you run into performance issues, you can leave the emotion model blank to use the chat model for both. 
 
 
 
@@ -355,59 +337,12 @@ Edit these `.cfg` files to change how the LLM interprets NPC stats and behaviors
 ### Debug System
 
 - Per-system debug toggle switches (`Systems` enum: `GENERAL_SYSTEM`, `NPC_SYSTEM`, `LOCATION_SYSTEM`, `USER_SYSTEM`, `PLAYER_SYSTEM`, `JUDGEMENT_SYSTEM`, `MEMORY_SYSTEM`, `QUEST_SYSTEM`, `EMOTION_SYSTEM`)
-- Emotion judge log viewer with raw and condensed views
+- Emotion judge log viewer 
 - System log viewer filterable by level and system
 - LLM input message toggle (`/show_llm_input`) — prints the full system prompt before each NPC call
 
 ---
 
-
-## Console Command Reference
-
-For a full command listing see [SOULCTRL_HELPER_GUIDE.md](SOULCTRL_HELPER_GUIDE.md) or type `/?` inside the app.
-
-
-### Main Menu
-
-| Command       | Description                                       |
-| `/editor`     | Open NPC Profile Editor                           |
-| `/location`   | Open Location Profile Editor                      |
-| `/player`     | Open Chat Player                                  |
-| `/user`       | Manage user profiles                              |
-| `/manage`     | Manage LLM providers and models                   |
-| `/help`       | Start interactive System Helper session           |
-| `/debug_adm`  | Open Debug Manager                                |
-| `/?`          | Quick ask System Helper (inline or one-off loop)  |
-| `/quit`       | Exit                                              |
-
-
-### Chat Player (selection)
-
-| Command                           | Description                                             |
-| `/run`                            | Start conversation                                      |
-| `/stop`                           | Stop without unloading NPC/location                     |
-| `/load_npc [id]`                  | Load NPC by filename or list index                      |
-| `/load_loc [id]`                  | Load location by filename or list index                 |
-| `/clr_convo`                      | Clear live conversation history                         |
-| `/undo`                           | Undo last user entry                                    |
-| `/items`                          | Browse and use inventory items                          |
-| `/loc_items`                      | Browse and use location interactables                   |
-| `/keys`                           | Browse your keys dict, use key actions, or delete keys  |
-| `/npc_keys`                       | Browse NPC keys dict, use key actions, or delete keys   |
-| `/give`                           | Transfer an item from user inventory to active NPC      |
-| `/use_item`                       | Trigger an action using an NPC inventory item           |
-| `/transition [idx]`               | Move to a new scene                                     |
-| `/time [HH:MM AM/PM]`             | Set location time of day                                |
-| `/danger [0-100]`                 | Set location danger level                               |
-| `/tick [seconds]`                 | View or set world tick interval                         |
-| `/auto_init` / `[true/false]`     | Toggle auto-initialize chat                             |
-| `/auto_cd` / `[seconds]`          | Set auto-init idle cooldown                             |
-| `/judge_status`                   | Show judge scheduler panel                              |
-| `/judge_cd` /  `[name] [rounds]`  | Set per-judge cooldown                                  |
-| `/update`                         | Print current LLM system prompt                         |
-| `/history`                        | Show full conversation history                          |
-
----
 
 ## Data Directory Layout
 
@@ -429,15 +364,5 @@ Erosive_Tech/
 ```
 
 ---
-
-## Demo Mode
-
-The demo edition ships with daily interaction limits and editing restrictions. See [SOULCTRL_DEMO_README.md](SOULCTRL_DEMO_README.md) for details.
-
----
-
-## API Reference
-
-For the full programmatic API see [SOULCTRL_API_GUIDE.md](SOULCTRL_API_GUIDE.md).
 
 
