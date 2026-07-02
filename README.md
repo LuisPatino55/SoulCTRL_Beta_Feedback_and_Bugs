@@ -6,14 +6,14 @@ A Python framework for creating emotionally intelligent NPC interactions powered
 
 ## Requirements
 
-- Python 3.11+
+- Python 3.12+
 - [Ollama](https://ollama.com/docs/installation) running locally *(default provider; swap to any cloud API via `/manage` or `LLM ServiceModels Manager` button in the webGUI interface)*
 - Python packages: `openai`, `keyring`, `colorama`
 - Optional browser GUI packages: `fastapi`, `uvicorn`
 
 ## Windows Installer (Recommended First Run)
 
-If Python 3.11+ is already installed, run:
+If Python 3.12+ is already installed, run:
 
 ```bat
 install_chat_system.bat
@@ -61,7 +61,7 @@ pip install .[gui]
 
 ### Console mode
 ```bash
-python run_chat.py
+run_chat.bat
 ```
 
 
@@ -83,8 +83,10 @@ system.open_player_mode()
 ### Browser GUI mode (Best experience)
 
 ```bash
-python run_chat_gui.py
+run_chat_gui.bat
 ```
+
+These launch wrappers run with the installer-created `.venv` so dependencies stay consistent.
 
 Optional flags:
 
@@ -109,6 +111,31 @@ Optional flags:
 - Interactable item system that the NPC uses autonomously to trigger actions (eat, drink, change locations, use weapons, charge and pay currency, etc.)
 - Conversation archiving: live history compresses to archive chunks when it exceeds `chat_history_compression_threshold`; past context is summarized by the LLM and kept as a rolling archive
 - Multiple user profiles with per-user & per NPC (memory, relationship stats, and conversation history)
+
+
+### LLM Model Recommendations
+
+* Context Window Size (Minimum: 32K - Recommended: 128K)
+  - Recommended minimum context size (from Ollma settings) is 32K but you will need to be conservative with memory and conversation history to avoid hitting the context limit of your model. Use the biggest context you can run on your system for best results (developed with 128k). The system will automatically compress conversation history into a summary when it exceeds the `chat_history_compression_threshold` setting. You will see chat quality degrade if your context size is too small.
+
+* Ollama Model Recommendations
+  - For chat model, using a larger model is recommended for best quality (depending on your system capabilities). Choose a model that is abliterated or uncensored and is good at conversation / roleplay. 
+    - Recommended chat models I tested: (Highest Resource Demand)
+      - `DaddyLLAMA/magum_v2_123b_iq3_xxs:latest` (Ollama) 
+      - `nchapman/l3.3-70b-euryale-v2.3:70b` (Ollama) 
+    - Recommended chat models I tested: (Medium Resource Demand)
+      - `huihui_ai/qwen3.5-abliterated:35b` (Ollama) 
+      - `vaultbox/qwen3.5-uncensored:35b` (Ollama)
+    - Recommended chat models I tested: (Lowest Resource Demand - These get kinda sketch)
+      - `HammerAI/llama-3-lexi-uncensored:8b-q8_0` (Ollama) 
+      - `HammerAI/mistral-nemo-uncensored:12b-q4_0` (Ollama)
+
+  - For emotion model, using lighter and `instruction` models is recommended for best performance. The best emotion model I have tested so far that is light and works with 95% success is:
+    `baytout3/Qwen3.5-Uncensored-HauhauCS-Aggressive:9b` (Ollama), but of course, you can do your own testing. 
+
+* Model Switching
+  - If switching between different chat and emotion models, is too taxing on your system, you can leave the emotion model blank and the chat model will be used for both. The system is designed to efficiently switch between models at an optimal time, but if you run into performance issues, you can leave the emotion model blank to use the chat model for both. However, you may see more `judge component` failures in the debug logs if not using a specific `instruction` model.
+
 
 
 ### NPC Profiles
