@@ -25,6 +25,8 @@ Optional flags:
 install_chat_system.bat -ModelName qwen2.5 -NoLaunch
 ```
 
+Video walkthrough: [SoulCTRL Installer Walkthrough](https://youtu.be/lRgAWQ3jsT0)
+
 What the installer does:
 
 - Creates `.venv`
