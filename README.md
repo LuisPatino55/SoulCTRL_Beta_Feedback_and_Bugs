@@ -25,7 +25,7 @@ Optional flags:
 install_chat_system.bat -ModelName qwen2.5 -NoLaunch
 ```
 
-SoulCTRL Installer [Download v0.1.0-beta.2](https://www.dropbox.com/scl/fi/rtikpfr1z84nspcup9ts8/SoulCTRL-v0.1.0-beta.2-installer-bundle.zip?rlkey=qpf7kkv1gz2pzv6swvswwwzlf&st=qn3v6kcq&dl=0) Must have folder access to download.
+SoulCTRL Installer [Download v0.1.0-beta.2](https://www.dropbox.com/scl/fo/fqy5i6z36uuplym34m5bq/AHicFlixUmfE41ZY58Q2o_I?rlkey=d117cw50bbkph8oymdqhlgnlz&st=ry4qrl4o&dl=0) Must have folder access to download.
 
 Video walkthrough: [SoulCTRL Installer Walkthrough](https://youtu.be/lRgAWQ3jsT0)
 
