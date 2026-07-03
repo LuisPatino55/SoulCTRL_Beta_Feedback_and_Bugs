@@ -2,7 +2,7 @@
 
 A Python framework for creating emotionally intelligent NPC interactions powered by a local or cloud LLM. Ships with [Ollama](https://ollama.com) as the default offline provider; any OpenAI-compatible API works as a drop-in replacement with no code changes.
 
-Scenario Item Demo: [SoulCTRL 1st Date Scenario](https://youtu.be/HU9s1x1RNrg)
+Scenario Item Demo: [SoulCTRL 1st Date Scenario](https://youtu.be/XG9Fy0r0QDY)
 
 ---
 
