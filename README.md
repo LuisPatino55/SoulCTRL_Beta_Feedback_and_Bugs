@@ -29,6 +29,9 @@ SoulCTRL Installer [Download v0.1.0-beta.2](https://www.dropbox.com/scl/fo/fqy5i
 
 Video walkthrough: [SoulCTRL Installer Walkthrough](https://youtu.be/lRgAWQ3jsT0)
 
+Scenario Item Demo: [SoulCTRL 1st Date Scenario](https://youtu.be/HU9s1x1RNrg)
+
+
 What the installer does:
 
 - Creates `.venv`
