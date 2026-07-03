@@ -2,6 +2,8 @@
 
 A Python framework for creating emotionally intelligent NPC interactions powered by a local or cloud LLM. Ships with [Ollama](https://ollama.com) as the default offline provider; any OpenAI-compatible API works as a drop-in replacement with no code changes.
 
+Scenario Item Demo: [SoulCTRL 1st Date Scenario](https://youtu.be/HU9s1x1RNrg)
+
 ---
 
 ## Requirements
@@ -27,9 +29,7 @@ install_chat_system.bat -ModelName qwen2.5 -NoLaunch
 
 SoulCTRL Installer [Download v0.1.0-beta.2](https://www.dropbox.com/scl/fo/fqy5i6z36uuplym34m5bq/AHicFlixUmfE41ZY58Q2o_I?rlkey=d117cw50bbkph8oymdqhlgnlz&st=ry4qrl4o&dl=0) Must have folder access to download.
 
-Video walkthrough: [SoulCTRL Installer Walkthrough](https://youtu.be/lRgAWQ3jsT0)
-
-Scenario Item Demo: [SoulCTRL 1st Date Scenario](https://youtu.be/HU9s1x1RNrg)
+Installation Video walkthrough: [SoulCTRL Installer Walkthrough](https://youtu.be/lRgAWQ3jsT0)
 
 
 What the installer does:
