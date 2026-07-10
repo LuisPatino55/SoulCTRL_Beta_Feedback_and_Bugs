@@ -2,8 +2,6 @@
 
 A Python framework for creating emotionally intelligent NPC interactions powered by a local or cloud LLM. Ships with [Ollama](https://ollama.com) as the default offline provider; any OpenAI-compatible API works as a drop-in replacement with no code changes.
 
-Scenario Item Demo: [SoulCTRL 1st Date Scenario](https://youtu.be/XG9Fy0r0QDY)
-
 ---
 
 ## Requirements
@@ -27,24 +25,24 @@ Optional flags:
 install_chat_system.bat -ModelName qwen2.5 -NoLaunch
 ```
 
-SoulCTRL Installer [Download v0.1.0-beta.2](https://www.dropbox.com/scl/fo/fqy5i6z36uuplym34m5bq/AHicFlixUmfE41ZY58Q2o_I?rlkey=d117cw50bbkph8oymdqhlgnlz&st=ry4qrl4o&dl=0) Must have folder access to download.
-
-Installation Video walkthrough: [SoulCTRL Installer Walkthrough](https://youtu.be/lRgAWQ3jsT0)
-
-
 What the installer does:
 
 - Creates `.venv`
 - Installs package dependencies with GUI extras
 - Attempts to install Ollama automatically (best effort)
-- Prompts for your default model name and saves it as chat and emotion model
+- On first install (or when no chat model is set), prompts for a default model and saves it as chat and emotion model
+- On reinstall, if a chat model is already set and `-ModelName` is not provided, preserves existing chat and emotion model settings without prompting
+- If `-ModelName` is provided, explicitly overrides existing chat and emotion model settings
 - Adds that model name to the Ollama provider model list (no validation)
 - Attempts `ollama pull <model>` and reports if pull started; otherwise tells you to pull manually
 - Launches `run_chat_gui.py`
 - Creates `launcher.bat` and a `Launch SoulCTRL.lnk` shortcut in the project folder
 
 After installation, non-technical users can start the app by double-clicking `Launch SoulCTRL.lnk`
-or `launcher.bat`, which opens a small window to choose **Console** or **GUI** mode.
+or `launcher.bat`, which launches the browser GUI directly.
+
+If global debug mode is enabled in settings, the GUI launcher keeps its console window visible for startup logs.
+Otherwise it launches without the extra console window.
 
 Notes:
 
@@ -71,6 +69,8 @@ pip install .[gui]
 run_chat.bat
 ```
 
+Console mode is available through command-line launch only.
+
 
 ### Programmatic / No UI mode (headless)
 
@@ -94,6 +94,7 @@ run_chat_gui.bat
 ```
 
 These launch wrappers run with the installer-created `.venv` so dependencies stay consistent.
+Double-click users can use `launcher.bat` or `Launch SoulCTRL.lnk` to open this mode directly.
 
 Optional flags:
 
@@ -398,5 +399,3 @@ Erosive_Tech/
 ```
 
 ---
-
-
